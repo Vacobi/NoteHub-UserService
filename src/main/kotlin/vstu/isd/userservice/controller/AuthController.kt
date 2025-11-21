@@ -69,6 +69,7 @@ class AuthController(
         val cookie = Cookie("refresh_token", authResponse.refreshToken).apply {
             isHttpOnly = true
             secure = true
+            path = "/"
         }
         response.addCookie(cookie)
 
@@ -183,7 +184,7 @@ class AuthController(
 
         val cookie = Cookie("refresh_token", "").apply {
             maxAge = 0
-            path = "/api/v1/auth"
+            path = "/"
             isHttpOnly = true
         }
 
