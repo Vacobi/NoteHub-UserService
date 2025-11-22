@@ -40,15 +40,19 @@ class UserValidator(
             )
         }
 
-    fun validatePassword(password: String): Optional<ValidationException> =
-        if (password.matches(Regex(userValidationRule.password.regex))) {
+    fun validatePassword(password: String): Optional<ValidationException> {
+        val specSymbols = Regex("[!@#\$%^&*()_\\-+=]")
+        val hasSpecial = specSymbols.containsMatchIn(password)
+
+        return if (password.matches(Regex(userValidationRule.password.regex)) && hasSpecial) {
             Optional.empty()
         } else {
             Optional.of(
                 ValidationException(
-                    "Password must match rules: ${userValidationRule.password.regex}",
+                    "Password must match rules: ${userValidationRule.password.regex} and contains spec symbols",
                     ClientExceptionName.INVALID_PASSWORD
                 )
             )
         }
+    }
 }
